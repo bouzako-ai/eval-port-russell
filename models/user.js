@@ -42,9 +42,18 @@ const userSchema = new mongoose.Schema({
  * Async car hachage du mot de passe peut prendre du temps.
  */
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;
   }
   this.password = await bcrypt.hash(this.password, 12);
 });
+
+/** Retire le mot de passe des réponses JSON et ne le fait jamais apparaitre */
+userSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+module.exports = mongoose.model("User", userSchema);
