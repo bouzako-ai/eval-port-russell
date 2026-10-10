@@ -1,5 +1,5 @@
 /**
- * @file Routes de l'API pour la gestion des utilisateurs.
+ * @file Routes pour la gestion des utilisateurs.
  */
 const express = require("express");
 const router = express.Router();
