@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catways | Port de plaisance Russell</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+
+  <!-- Menu de navigation -->
+  <header class="topbar">
+    <a class="logo" href="/dashboard"> Port Russell</a>
+    <nav>
+      <a href="/dashboard">Tableau de bord</a>
+      <a href="/dashboard/catways">Catways</a>
+      <a href="/dashboard/reservations">Réservations</a>
+      <a href="/dashboard/users">Utilisateurs</a>
+      <a href="/api-docs">Documentation</a>
+      <a href="/logout" data-logout>Déconnexion</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- Liste des catways -->
+    <section class="card">
+      <h1>Catways</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Numéro</th>
+            <th>Type</th>
+            <th>État</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% catways.forEach((catway) => { %>
+            <tr>
+              <td><%= catway.catwayNumber %></td>
+              <td><%= catway.catwayType %></td>
+              <td><%= catway.catwayState %></td>
+              <td><a href="/dashboard/catways/<%= catway.catwayNumber %>">Voir le détail</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Création d'un catway -->
+    <section class="card">
+      <h2>Créer un catway</h2>
+      <form data-api="/catways" data-method="POST">
+        <label for="catwayNumber">Numéro</label>
+        <input type="number" id="catwayNumber" name="catwayNumber" min="1" required>
+
+        <label for="catwayType">Type</label>
+        <select id="catwayType" name="catwayType" required>
+          <option value="short">short</option>
+          <option value="long">long</option>
+        </select>
+
+        <label for="catwayState">État</label>
+        <input type="text" id="catwayState" name="catwayState" required>
+
+        <button type="submit">Créer</button>
+        <p class="message"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <script src="/javascripts/script.js"></script>
+</body>
+</html>
