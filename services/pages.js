@@ -3,6 +3,7 @@
  */
 const Reservation = require("../models/reservations");
 const Catway = require("../models/catway");
+const User = require("../models/user");
 const mongoose = require("mongoose");
 
 /**
@@ -124,6 +125,46 @@ exports.reservationDetails = async (req, res, next) => {
       return next();
     }
     return res.render("reservations-details", { reservation });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+/** Affiche la liste de tous les utilisateurs triés par nom d'utilisateur.
+ *
+ * @async
+ * @param {Object} req Requête HTTP.
+ * @param {Object} res Réponse HTTP.
+ * @param {Function} next Fonction de passage à la gestion d'erreurs.
+ * @returns {Promise<void>} Affiche la vue "users".
+ */
+
+exports.usersList = async (req, res, next) => {
+  try {
+    const users = await User.find().sort({ username: 1 });
+    return res.render("users", { users });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+/** Affiche les détails d'un utilisateur à partir de son identifiant.
+ *
+ * @async
+ * @param {Object} req Requête HTTP (req.params.email = adresse email de l'utilisateur).
+ * @param {Object} res Réponse HTTP.
+ * @param {Function} next Fonction de passage à la suite (page 404) ou à la gestion d'erreurs.
+ * @returns {Promise<void>} Affiche la vue "user".
+ */
+exports.userDetails = async (req, res, next) => {
+  const email = req.params.email.toLowerCase();
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next();
+    }
+    return res.render("users-details", { user });
   } catch (error) {
     return next(error);
   }

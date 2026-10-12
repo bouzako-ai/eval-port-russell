@@ -16,4 +16,9 @@ router.get("/catways/:id", service.catwayDetails);
 router.get("/reservations", service.reservationsList);
 /** GET /dashboard/reservations/:idReservation : détails d'une réservation. */
 router.get("/reservations/:idReservation", service.reservationDetails);
+/** GET /dashboard/users : liste de tous les utilisateurs. */
+router.get("/users", service.usersList);
+/** GET /dashboard/users/:email : détails d'un utilisateur. */
+router.get("/users/:email", service.userDetails);
+
 module.exports = router;

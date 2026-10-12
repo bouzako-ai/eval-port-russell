@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= user.username %> | Port de plaisance Russell</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <!-- Menu de navigation -->
+    <header class="topbar">
+      <a class="logo" href="/dashboard"> Port Russell</a>
+      <nav>
+        <a href="/dashboard">Tableau de bord</a>
+        <a href="/dashboard/catways">Catways</a>
+        <a href="/dashboard/reservations">Réservations</a>
+        <a href="/dashboard/users">Utilisateurs</a>
+        <a href="/api-docs">Documentation</a>
+        <a href="/logout" data-logout>Déconnexion</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- Détails de l'utilisateur -->
+      <section class="card">
+        <h1><%= user.username %></h1>
+        <p><strong>Email :</strong> <%= user.email %></p>
+        <p>
+          <a href="/dashboard/users">← Retour à la liste des utilisateurs</a>
+        </p>
+      </section>
+
+      <!-- Modification de l'utilisateur -->
+      <section class="card">
+        <h2>Modifier l'utilisateur</h2>
+        <form
+          data-api="/users/<%= encodeURIComponent(user.email) %>"
+          data-method="PUT"
+          data-redirect="/dashboard/users"
+        >
+          <label for="username">Nom d'utilisateur</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="<%= user.username %>"
+            required
+          />
+
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="<%= user.email %>"
+            required
+          />
+
+          <label for="password"
+            >Nouveau mot de passe (laisser vide pour ne pas le changer)</label
+          >
+          <input type="password" id="password" name="password" minlength="6" />
+
+          <button type="submit">Enregistrer</button>
+          <p class="message"></p>
+        </form>
+      </section>
+
+      <!-- Suppression de l'utilisateur -->
+      <section class="card">
+        <h2>Supprimer cet utilisateur</h2>
+        <form
+          data-api="/users/<%= encodeURIComponent(user.email) %>"
+          data-method="DELETE"
+          data-confirm="Supprimer cet utilisateur ?"
+          data-redirect="/dashboard/users"
+        >
+          <button type="submit" class="danger">Supprimer</button>
+          <p class="message"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="/javascripts/script.js"></script>
+  </body>
+</html>
