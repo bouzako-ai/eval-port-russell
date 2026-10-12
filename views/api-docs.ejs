@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation de l'API | Port de plaisance Russell</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <main class="container">
+
+    <!-- Présentation de l'API -->
+    <section class="card">
+      <h1>Documentation de l'API</h1>
+      <p>
+        L'API du Port de plaisance Russell permet de gérer les catways, les réservations
+        et les utilisateurs de la capitainerie. Les données sont envoyées et renvoyées au format <strong>JSON</strong>.
+      </p>
+      <p>
+        <strong>Authentification :</strong> Toutes les routes <code>/catways</code> et <code>/users</code>
+        sont réservées aux utilisateurs connectés. Après un <code>POST /login</code> réussi, un jeton (JWT)
+        est déposé dans un cookie et envoyé automatiquement à chaque requête. Sans ce jeton, l'API répond <code>401</code>.
+      </p>
+      <p><a href="/">← Retour à l'accueil</a></p>
+    </section>
+
+    <!-- Codes de réponse -->
+    <section class="card">
+      <h2>Codes de réponse</h2>
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Signification</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>200</td><td>Succès</td></tr>
+          <tr><td>201</td><td>Ressource créée</td></tr>
+          <tr><td>400</td><td>Données invalides </td></tr>
+          <tr><td>401</td><td>Non authentifié, ou identifiants incorrects</td></tr>
+          <tr><td>404</td><td>Ressource introuvable</td></tr>
+          <tr><td>409</td><td>Conflit : numéro de catway ou email déjà utilisé</td></tr>
+          <tr><td>500</td><td>Erreur interne du serveur</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Authentification -->
+    <section class="card">
+      <h2>Authentification</h2>
+      <table>
+        <thead>
+          <tr><th>Méthode</th><th>URL</th><th>Description</th><th>Body (JSON)</th><th>Réponses</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>POST</td><td><code>/login</code></td><td>Connecte un utilisateur</td>
+            <td><code>{ "email", "password" }</code></td><td>200, 400, 401</td>
+          </tr>
+          <tr>
+            <td>GET</td><td><code>/logout</code></td><td>Déconnecte l'utilisateur</td>
+            <td>—</td><td>200</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Catways -->
+    <section class="card">
+      <h2>Catways</h2>
+      <p><code>:id</code> représente le numéro du catway.</p>
+      <table>
+        <thead>
+          <tr><th>Méthode</th><th>URL</th><th>Description</th><th>Body (JSON)</th><th>Réponses</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GET</td><td><code>/catways</code></td><td>Liste tous les catways</td>
+            <td>—</td><td>200, 401</td>
+          </tr>
+          <tr>
+            <td>GET</td><td><code>/catways/:id</code></td><td>Détails d'un catway</td>
+            <td>—</td><td>200, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>POST</td><td><code>/catways</code></td><td>Crée un catway</td>
+            <td><code>{ "catwayNumber", "catwayType", "catwayState" }</code><br>(<code>catwayType</code> : <code>"long"</code> ou <code>"short"</code>)</td>
+            <td>201, 400, 401, 409</td>
+          </tr>
+          <tr>
+            <td>PUT</td><td><code>/catways/:id</code></td><td>Modifie l'état d'un catway (le numéro et le type ne sont pas modifiables)</td>
+            <td><code>{ "catwayState" }</code></td><td>200, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>DELETE</td><td><code>/catways/:id</code></td><td>Supprime un catway et ses réservations</td>
+            <td>—</td><td>200, 400, 401, 404</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Réservations -->
+    <section class="card">
+      <h2>Réservations</h2>
+      <p>
+        Les réservations sont une sous-ressource des catways. <code>:id</code> représente le numéro du catway,
+        <code>:idReservation</code> l'identifiant de la réservation. Les dates sont au format <code>AAAA-MM-JJ</code>.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Méthode</th><th>URL</th><th>Description</th><th>Body (JSON)</th><th>Réponses</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GET</td><td><code>/catways/:id/reservations</code></td><td>Liste les réservations d'un catway</td>
+            <td>—</td><td>200, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>GET</td><td><code>/catways/:id/reservations/:idReservation</code></td><td>Détails d'une réservation</td>
+            <td>—</td><td>200, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>POST</td><td><code>/catways/:id/reservations</code></td><td>Crée une réservation sur un catway</td>
+            <td><code>{ "clientName", "boatName", "startDate", "endDate" }</code></td>
+            <td>201, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>PUT</td><td><code>/catways/:id/reservations/:idReservation</code></td><td>Modifie une réservation (seuls les champs envoyés sont modifiés)</td>
+            <td><code>{ "clientName", "boatName", "startDate", "endDate" }</code></td>
+            <td>200, 400, 401, 404</td>
+          </tr>
+          <tr>
+            <td>DELETE</td><td><code>/catways/:id/reservations/:idReservation</code></td><td>Supprime une réservation</td>
+            <td>—</td><td>200, 400, 401, 404</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Utilisateurs -->
+    <section class="card">
+      <h2>Utilisateurs</h2>
+      <p><code>:email</code> représente l'adresse email de l'utilisateur. Le mot de passe n'est jamais renvoyé par l'API.</p>
+      <table>
+        <thead>
+          <tr><th>Méthode</th><th>URL</th><th>Description</th><th>Body (JSON)</th><th>Réponses</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GET</td><td><code>/users</code></td><td>Liste tous les utilisateurs</td>
+            <td>—</td><td>200, 401</td>
+          </tr>
+          <tr>
+            <td>GET</td><td><code>/users/:email</code></td><td>Détails d'un utilisateur</td>
+            <td>—</td><td>200, 401, 404</td>
+          </tr>
+          <tr>
+            <td>POST</td><td><code>/users</code></td><td>Crée un utilisateur</td>
+            <td><code>{ "username", "email", "password" }</code></td><td>201, 400, 401, 409</td>
+          </tr>
+          <tr>
+            <td>PUT</td><td><code>/users/:email</code></td><td>Modifie un utilisateur (seuls les champs envoyés sont modifiés)</td>
+            <td><code>{ "username", "email", "password" }</code></td><td>200, 400, 401, 404, 409</td>
+          </tr>
+          <tr>
+            <td>DELETE</td><td><code>/users/:email</code></td><td>Supprime un utilisateur</td>
+            <td>—</td><td>200, 401, 404</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</body>
+</html>

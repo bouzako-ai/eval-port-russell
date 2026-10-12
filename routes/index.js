@@ -14,4 +14,10 @@ router.get("/", function (req, res, next) {
 /** Connexion et déconnexion */
 router.post("/login", authService.login);
 router.get("/logout", authService.logout);
+
+/** GET /api-docs : Route pour afficher la documentation API */
+router.get("/api-docs", function (req, res, next) {
+  res.render("api-docs");
+});
+
 module.exports = router;
