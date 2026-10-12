@@ -1,0 +1,18 @@
+{
+  "source": {
+    "include": [
+      "app.js",
+      "db",
+      "models",
+      "services",
+      "routes",
+      "middlewares",
+      "public/javascripts"
+    ]
+  },
+  "opts": {
+    "destination": "docs",
+    "recurse": true,
+    "encoding": "utf8"
+  }
+}

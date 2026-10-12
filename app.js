@@ -1,3 +1,7 @@
+/**
+ * @file Point d'entrée de l'application Express.
+ * connexion mongoDB, middleware, routes, gestion des erreurs.
+ */
 require("dotenv").config();
 var createError = require("http-errors");
 var express = require("express");
@@ -8,7 +12,7 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var catwaysRouter = require("./routes/catways");
-var private = require("./middlewares/private");
+var auth = require("./middlewares/private");
 var pagesRouter = require("./routes/pages");
 
 var app = express();
@@ -26,10 +30,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", private.checkJWT, usersRouter);
-app.use("/catways", private.checkJWT, catwaysRouter);
-app.use("/dashboard", private.checkJWTPage, pagesRouter);
-app.use("/pages", private.checkJWT, pagesRouter);
+app.use("/users", auth.checkJWT, usersRouter);
+app.use("/catways", auth.checkJWT, catwaysRouter);
+app.use("/dashboard", auth.checkJWTPage, pagesRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
