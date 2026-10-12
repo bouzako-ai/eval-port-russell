@@ -11,7 +11,7 @@
   <body>
     <!-- Menu de navigation -->
     <header class="topbar">
-      <a class="logo" href="/dashboard">⚓ Port Russell</a>
+      <a class="logo" href="/dashboard"> Port Russell</a>
       <nav>
         <a href="/dashboard">Tableau de bord</a>
         <a href="/dashboard/catways">Catways</a>
@@ -47,6 +47,58 @@
           <p class="message"></p>
         </form>
       </section>
+
+          <!-- Réservations de ce catway -->
+    <section class="card">
+      <h2>Réservations de ce catway</h2>
+      <% if (reservations.length === 0) { %>
+        <p>Aucune réservation pour ce catway.</p>
+      <% } else { %>
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Bateau</th>
+              <th>Début</th>
+              <th>Fin</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reservations.forEach((reservation) => { %>
+              <tr>
+                <td><%= reservation.clientName %></td>
+                <td><%= reservation.boatName %></td>
+                <td><%= reservation.startDate.toLocaleDateString('fr-FR') %></td>
+                <td><%= reservation.endDate.toLocaleDateString('fr-FR') %></td>
+                <td><a href="/dashboard/reservations/<%= reservation._id %>">Voir le détail</a></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } %>
+    </section>
+
+    <!-- Création d'une réservation sur ce catway -->
+    <section class="card">
+      <h2>Réserver ce catway</h2>
+      <form data-api="/catways/<%= catway.catwayNumber %>/reservations" data-method="POST">
+        <label for="newClientName">Client</label>
+        <input type="text" id="newClientName" name="clientName" required>
+
+        <label for="newBoatName">Bateau</label>
+        <input type="text" id="newBoatName" name="boatName" required>
+
+        <label for="newStartDate">Date de début</label>
+        <input type="date" id="newStartDate" name="startDate" required>
+
+        <label for="newEndDate">Date de fin</label>
+        <input type="date" id="newEndDate" name="endDate" required>
+
+        <button type="submit">Réserver</button>
+        <p class="message"></p>
+      </form>
+    </section>
 
       <!-- Suppression du catway -->
       <section class="card">

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Réservation | Port de plaisance Russell</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <!-- Menu de navigation -->
+    <header class="topbar">
+      <a class="logo" href="/dashboard"> Port Russell</a>
+      <nav>
+        <a href="/dashboard">Tableau de bord</a>
+        <a href="/dashboard/catways">Catways</a>
+        <a href="/dashboard/reservations">Réservations</a>
+        <a href="/dashboard/users">Utilisateurs</a>
+        <a href="/api-docs">Documentation</a>
+        <a href="/logout" data-logout>Déconnexion</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <!-- Détails de la réservation -->
+      <section class="card">
+        <h1>Réservation de <%= reservation.clientName %></h1>
+        <p>
+          <strong>Catway :</strong>
+          <a href="/dashboard/catways/<%= reservation.catwayNumber %>"
+            >n°<%= reservation.catwayNumber %></a
+          >
+        </p>
+        <p><strong>Bateau :</strong> <%= reservation.boatName %></p>
+        <p>
+          <strong>Début :</strong> <%=
+          reservation.startDate.toLocaleDateString('fr-FR') %>
+        </p>
+        <p>
+          <strong>Fin :</strong> <%=
+          reservation.endDate.toLocaleDateString('fr-FR') %>
+        </p>
+        <p>
+          <a href="/dashboard/reservations"
+            >← Retour à la liste des réservations</a
+          >
+        </p>
+      </section>
+
+      <!-- Modification de la réservation -->
+      <section class="card">
+        <h2>Modifier la réservation</h2>
+        <form
+          data-api="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>"
+          data-method="PUT"
+        >
+          <label for="clientName">Client</label>
+          <input
+            type="text"
+            id="clientName"
+            name="clientName"
+            value="<%= reservation.clientName %>"
+            required
+          />
+
+          <label for="boatName">Bateau</label>
+          <input
+            type="text"
+            id="boatName"
+            name="boatName"
+            value="<%= reservation.boatName %>"
+            required
+          />
+
+          <label for="startDate">Date de début</label>
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            value="<%= reservation.startDate.toISOString().slice(0, 10) %>"
+            required
+          />
+
+          <label for="endDate">Date de fin</label>
+          <input
+            type="date"
+            id="endDate"
+            name="endDate"
+            value="<%= reservation.endDate.toISOString().slice(0, 10) %>"
+            required
+          />
+
+          <button type="submit">Enregistrer</button>
+          <p class="message"></p>
+        </form>
+      </section>
+
+      <!-- Suppression de la réservation -->
+      <section class="card">
+        <h2>Supprimer cette réservation</h2>
+        <form
+          data-api="/catways/<%= reservation.catwayNumber %>/reservations/<%= reservation._id %>"
+          data-method="DELETE"
+          data-confirm="Supprimer cette réservation ?"
+          data-redirect="/dashboard/reservations"
+        >
+          <button type="submit" class="danger">Supprimer</button>
+          <p class="message"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="/javascripts/script.js"></script>
+  </body>
+</html>
