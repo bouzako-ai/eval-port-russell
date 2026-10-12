@@ -1,8 +1,111 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/* Feuille de style de l'application du Port de plaisance Russell. */
+
+/* Règles générales */
+* {
+  box-sizing: border-box;
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+body {
+  margin: 0;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  background: #eef3f8;
+  color: #1f2d3d;
+}
+
+/* Menu du haut */
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: #0b3d66;
+}
+.topbar a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 16px;
+}
+.topbar .logo {
+  margin-left: 0;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* Contenu principal et cartes */
+.container {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Formulaires */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: bold;
+}
+input,
+select,
+button {
+  padding: 8px;
+  font-size: 1em;
+  border: 1px solid #b8c6d4;
+  border-radius: 4px;
+}
+button {
+  background: #0b5394;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background: #0b3d66;
+}
+button.danger {
+  background: #b3261e;
+}
+
+/* Tableaux */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 8px;
+  border-bottom: 1px solid #dde5ee;
+  text-align: left;
+}
+th {
+  background: #f3f7fb;
+}
+
+/* Messages d'erreur sous les formulaires */
+.message {
+  min-height: 1.2em;
+  margin: 0;
+}
+.message.error {
+  color: #b3261e;
 }
